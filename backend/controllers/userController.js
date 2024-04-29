@@ -1,11 +1,13 @@
 import asyncHandler from "express-async-handler";
+import generateToken from "../utils/generateToken.js";
+import User from "../models/userModal.js";
 
 // @desc Auth user/set token
 // route POST /api/users/auth
 // @access Public
 
 const authUser = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Auth User'});
+  res.status(200).json({ message: "Auth User" });
 });
 
 // @desc Register a new user
@@ -13,7 +15,31 @@ const authUser = asyncHandler(async (req, res) => {
 // @access Public
 
 const registerUser = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Register User'});
+  const { name, email, password } = req.body;
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(400).json({ message: "User already exists!" });
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+
+  if (user) {
+    generateToken(res, user._id);
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
 });
 
 // @desc Logout user
@@ -21,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access Public
 
 const logoutUser = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Logout User'});
+  res.status(200).json({ message: "Logout User" });
 });
 
 // @desc Get user profile
@@ -29,7 +55,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @access Private
 
 const getUserProfile = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'User profile'});
+  res.status(200).json({ message: "User profile" });
 });
 
 // @desc Update user profile
@@ -37,13 +63,13 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access Private
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Update user profile'});
+  res.status(200).json({ message: "Update user profile" });
 });
 
 export {
-    authUser,
-    registerUser,
-    logoutUser,
-    getUserProfile,
-    updateUserProfile
-}
+  authUser,
+  registerUser,
+  logoutUser,
+  getUserProfile,
+  updateUserProfile,
+};
