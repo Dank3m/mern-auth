@@ -39,7 +39,7 @@ const RegisterScreen = () => {
             }}
           />
         </Form.Group>
-        <Form.Group className="my-2" controlId="email">
+        <Form.Group className="my-2" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
