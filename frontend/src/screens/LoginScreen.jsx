@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import { useLoginMutation } from "../slices/usersAPISlice";
 import { setCredentials } from "../slices/authSlice";
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +32,7 @@ const LoginScreen = () => {
       dispatch(setCredentials({ ...res }));
       navigate("/");
     } catch (err) {
-      console.log(err?.data?.message || err.error);
+      toast.error(err?.data?.message || err.error);
     }
   };
   return (
@@ -59,6 +61,7 @@ const LoginScreen = () => {
             }}
           />
         </Form.Group>
+        {isLoading && <Loader />}
         <Button type="submit" variant="primary" className="mt-3">
           Sign In
         </Button>
