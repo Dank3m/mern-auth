@@ -23,7 +23,8 @@ const router = createBrowserRouter(
       <Route index element={<HomeScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
-      {/* Private Routes */}
+      {/* Private Routes */
+      }
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
@@ -37,4 +38,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <RouterProvider router={router} />
     </React.StrictMode>
   </Provider>
-);
+); 
